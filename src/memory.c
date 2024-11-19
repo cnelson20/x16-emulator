@@ -68,7 +68,6 @@ memory_init()
 
 
 	// Randomize all RAM (if option selected)
-	fprintf(stderr, "%d %x\n", randomizeRAM, memory_init_value);
 	if (randomizeRAM) {
 		time_t t;
 		srand((unsigned)time(&t));
@@ -115,6 +114,7 @@ void
 memory_randomize_ram(bool randomize, uint8_t fixed_val)
 {
 	randomizeRAM = randomize;
+	memory_init_value = fixed_val;
 }
 
 void
