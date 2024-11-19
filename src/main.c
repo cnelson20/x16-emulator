@@ -482,6 +482,8 @@ usage()
 	printf("\t(deprecated, no effect)\n");
 	printf("-zeroram\n");
 	printf("\tSet all RAM to zero instead of uninitialized random values\n");
+	printf("-fillram {0...255}\n");
+	printf("\tSet all RAM to a set value instead of uninitialized random values\n");
 	printf("-wuninit\n");
 	printf("\tPrints warning to stdout if uninitialized RAM is accessed\n");
 	printf("-memorystats <file.txt>\n");
@@ -620,7 +622,7 @@ main(int argc, char **argv)
 	// no ROM file is specified on the command line.
 	memcpy(rom_path, base_path, strlen(base_path) + 1);
 	strncpy(rom_path + strlen(rom_path), rom_filename, PATH_MAX - strlen(rom_path));
-	memory_randomize_ram(true);
+	memory_randomize_ram(true, 0);
 
 	argc--;
 	argv++;
@@ -894,8 +896,24 @@ main(int argc, char **argv)
 		} else if (!strcmp(argv[0], "-zeroram")) {
 			argc--;
 			argv++;
-			memory_randomize_ram(false);
+			memory_randomize_ram(false, 0);
 			zeroram = true;
+		} else if (!strcmp(argv[0], "-fillram")) {
+			int parsed_value;
+			argc--;
+			argv++;
+			if (!argc || argv[0][0] == '-') {
+				usage();
+			}
+			if (sscanf(argv[0], "%x", &parsed_value)) {
+				memory_randomize_ram(false, (uint8_t)parsed_value);
+			} else if (sscanf(argv[0], "%u", &parsed_value)) {
+				memory_randomize_ram(false, (uint8_t)parsed_value);
+			} else {
+				usage();
+			}
+			argc--;
+			argv++;
 		} else if (!strcmp(argv[0], "-wuninit")) {
 			argc--;
 			argv++;

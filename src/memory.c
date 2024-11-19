@@ -29,6 +29,7 @@ extern uint8_t *CART;
 
 static uint8_t addr_ym = 0;
 
+uint8_t memory_init_value = 0;
 bool randomizeRAM = false;
 bool reportUninitializedAccess = false;
 const char *reportUsageStatisticsFilename = NULL;
@@ -73,6 +74,10 @@ memory_init()
 		for (int i = 0; i < RAM_SIZE; i++) {
 			RAM[i] = rand();
 		}
+	} else if (memory_init_value) {
+		for (int i = 0; i < RAM_SIZE; i++) {
+			RAM[i] = memory_init_value;
+		}
 	}
 
 	// Initialize RAM access flag array (if option selected)
@@ -106,9 +111,9 @@ memory_report_usage_statistics(const char *filename) {
 }
 
 void
-memory_randomize_ram(bool value)
+memory_randomize_ram(bool randomize, uint8_t fixed_val)
 {
-	randomizeRAM = value;
+	randomizeRAM = randomize;
 }
 
 void
@@ -119,7 +124,7 @@ memory_initialize_cart(uint8_t *mem)
 			mem[i] = rand();
 		}
 	} else {
-		memset(mem, 0, 0x4000);
+		memset(mem, memory_init_value, 0x4000);
 	}
 }
 
