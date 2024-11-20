@@ -482,8 +482,8 @@ usage()
 	printf("\t(deprecated, no effect)\n");
 	printf("-zeroram\n");
 	printf("\tSet all RAM to zero instead of uninitialized random values\n");
-	printf("-fillram {0...255}\n");
-	printf("\tSet all RAM to a set value instead of uninitialized random values\n");
+	printf("-fillram <value>\n");
+	printf("\tSet all RAM to a value instead of uninitialized random values\n");
 	printf("-wuninit\n");
 	printf("\tPrints warning to stdout if uninitialized RAM is accessed\n");
 	printf("-memorystats <file.txt>\n");
